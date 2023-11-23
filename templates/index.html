@@ -1,19 +1,49 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}TOPページ{% endblock%}
 
 {% block content %}
-<div class="container">
-    <h1>ブログアプリケーション</h1>
-    <a href="/create" role="button">新規作成画面</a>
-    <a href="/logout" role="button">ログアウト</a>
-    {% for post in posts %}
-    <article>
-        <h2>{{ post.title }}</h2> 
-        <a href="/{{post.id}}/update" role="botton">編集</a>
-        <a href="/{{post.id}}/delete" role="botton">削除</a>
-        <p>作成日時: {{ post.created_at }}</p>
-        <p>{{ post.body }}</p>
-    </article>
-    {% endfor%}
+
+<div class="container my-5">
+
+<section class="jumbotron p-5 mb-4 text-center bg-light">
+<h1>My Blog</h1>
+</section>
+
+<section class="text-right mb-3">
+<a href="/create" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Post
+</a>
+<a href="/logout" class="btn btn-secondary">
+    Logout
+</a>
+</section>
+
+{% for post in posts %}
+
+<article class="card mb-4 shadow-sm">
+
+<div class="card-header">
+<h4 class="card-title">{{ post.title }}</h4>
+<cite class="card-subtitle text-muted mb-2">
+    Posted on {{ post.created_at }}
+</cite>
 </div>
+
+<div class="card-body">
+<p class="card-text">
+    {{ post.body | truncate(100) }}
+</p>
+
+<a href="/{{ post.id }}/detail" class="btn btn-primary">
+    Read More <i class="fas fa-angle-right"></i>
+</a>
+
+</div>
+
+
+
+</article>
+{% endfor %}
+
+</div>
+
 {% endblock %}
