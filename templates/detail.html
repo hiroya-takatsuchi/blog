@@ -1,0 +1,22 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+
+<h1>{{ post.title }}</h1>
+
+<div class="card">
+
+  <div class="card-header">
+    <span class="text-muted">{{ post.created_at }}</span>
+  </div>
+  
+  <div class="card-body">
+    <p>{{ post.body }}</p>
+  </div>
+
+</div>
+
+<a href="/" class="btn btn-secondary">
+  Back
+</a>
+
+{% endblock %}

@@ -96,6 +96,12 @@ def create():
     else:
         return render_template('create.html')
 
+@app.route('/<int:id>/detail')
+@login_required
+def detail(id):
+    post = Post.query.get(id)
+    return render_template('detail.html', post=post)
+
 @app.route('/<int:id>/update', methods=['GET', 'POST'])
 @login_required
 def update(id):
