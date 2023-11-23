@@ -43,7 +43,6 @@ def load_user(user_id):
 
 
 @app.route('/', methods=['GET', 'POST'])
-@login_required
 def index():
     if request.method == 'GET':
         posts = Post.query.all()
@@ -118,7 +117,3 @@ def delete(id):
     db.session.commit()
     return redirect('/')
 
-
-
-# with app.app_context():
-#     db.create_all()
