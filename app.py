@@ -1,9 +1,11 @@
 from flask import Flask 
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from datetime import datetime
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from flask_bootstrap import Bootstrap
+
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -16,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SECRET_KEY'] = os.urandom(24)
 # SQLAlchemyを初期化
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bootstrap = Bootstrap(app)
 
 login_manager = LoginManager()
@@ -28,6 +31,8 @@ class Post(db.Model):
     title = db.Column(db.String(50), nullable=False)
     body = db.Column(db.String(500), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False,default=datetime.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('posts'))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,7 +94,8 @@ def create():
         body = request.form.get('body')
 
         post = Post(title=title, body=body)
-
+        user = current_user  
+        post = Post(user_id=user.id)
         db.session.add(post)
         db.session.commit()
         return redirect('/')
